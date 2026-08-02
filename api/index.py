@@ -23,7 +23,7 @@ model = genai.GenerativeModel(
 chat = model.start_chat(history=[])
 
 @app.route("/")
-index():
+def index():
     return render_template("index.html")
 
 @app.route("/chat", methods=["POST"])
@@ -40,4 +40,3 @@ def handle_chat():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
