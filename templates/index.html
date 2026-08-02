@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sexy AI Companion 🥵🔥</title>
+    <style>
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .chat-container {
+            width: 400px;
+            height: 600px;
+            background: #161b22;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #30363d;
+        }
+        .chat-header {
+            background: #21262d;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #ff7b72;
+            border-bottom: 1px solid #30363d;
+        }
+        .chat-box {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .message {
+            padding: 10px 14px;
+            border-radius: 8px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.95em;
+        }
+        .user-message {
+            background: #1f6feb;
+            color: white;
+            align-self: flex-end;
+        }
+        .ai-message {
+            background: #21262d;
+            color: #e6edf3;
+            align-self: flex-start;
+            border: 1px solid #30363d;
+        }
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            background: #21262d;
+            border-top: 1px solid #30363d;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 10px;
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: white;
+            outline: none;
+        }
+        .chat-input-area button {
+            background: #238636;
+            color: white;
+            border: none;
+            padding: 0 15px;
+            margin-left: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .chat-input-area button:hover {
+            background: #2ea043;
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="chat-header">Sexy AI Companion 🥵🔥</div>
+    <div class="chat-box" id="chatBox">
+        <div class="message ai-message">හායි පැටියෝ... මම ඔයා එනකන් බලාගෙන හිටියේ! කියන්නකො මොකද කරන්න ඕන? 💕</div>
+    </div>
+    <div class="chat-input-area">
+        <input type="text" id="userInput" placeholder="መልዕක්තයක් ලියන්න..." onkeypress="handleKey(event)">
+        <button onclick="sendMessage()">යවන්න</button>
+    </div>
+</div>
+
+<script>
+    async function sendMessage() {
+        const inputField = document.getElementById("userInput");
+        const chatBox = document.getElementById("chatBox");
+        const messageText = inputField.value.trim();
+
+        if (!messageText) return;
+
+        // User message add kranna
+        const userDiv = document.createElement("div");
+        userDiv.className = "message user-message";
+        userDiv.textContent = messageText;
+        chatBox.appendChild(userDiv);
+
+        inputField.value = "";
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // AI response eka ganna
+        try {
+            const res = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: messageText })
+            });
+            const data = await res.json();
+
+            const aiDiv = document.createElement("div");
+            aiDiv.className = "message ai-message";
+            aiDiv.textContent = data.response;
+            chatBox.appendChild(aiDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    function handleKey(event) {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
+    }
+</script>
+
+</body>
+</html>
+
